@@ -16,7 +16,7 @@ class SA_LSTM(nn.Module):
 
         super(SA_LSTM,self).__init__()
 
-        # 参数导入部分
+        # 参数导入部分 ## Parameter import part
 
         self.in_dim = in_dim
         self.sequence_length = sequence_length
@@ -26,7 +26,7 @@ class SA_LSTM(nn.Module):
         self.out_dim = out_dim
         self.use_gpu = use_gpu
 
-        # 网络结构部分
+        # 网络结构部分 ## Network structure part
 
         # batch_norm layer
         self.batch_norm = nn.BatchNorm1d(in_dim)
@@ -41,7 +41,7 @@ class SA_LSTM(nn.Module):
         self.lstmcell = nn.LSTMCell(lstm_in_dim, lstm_hidden_dim)
         
         
-        # # output layer, 维度 1 × lstm_hiddendim -> 1 × 1
+        # # output layer, 维度(Dimension) 1 × lstm_hiddendim -> 1 × 1
         self.layer_out = nn.Linear(lstm_hidden_dim, out_dim,bias=False)
          
         # activate functions
@@ -51,15 +51,15 @@ class SA_LSTM(nn.Module):
 
     def forward (self,input):
 
-        # 批归一化处理输入
+        # 批归一化处理输入 ## Batch normalization processing input
         out = self.batch_norm(input)
         # print('batch_norm',out.size())
 
-        # 经过输入层处理
+        # 经过输入层处理 ## Processed by the input layer
         out = self.layer_in(out)
         # print('layer_in',out.size())
          
-        # 初始化隐藏状态与记忆单元状态
+        # 初始化隐藏状态与记忆单元状态 ## Initialize hidden state and memory cell state
         h_t_1 = torch.zeros(out.size(0), self.lstm_hidden_dim) # batch, hidden_size
         c_t_1 = torch.zeros(out.size(0), self.lstm_hidden_dim) # batch, hidden_size
       
@@ -91,7 +91,7 @@ class TA_LSTM(nn.Module):
 
         super(TA_LSTM,self).__init__()
 
-        # 参数导入部分
+        # 参数导入部分 ## Parameter import part
 
         self.in_dim = in_dim
         self.sequence_length = sequence_length
@@ -101,7 +101,7 @@ class TA_LSTM(nn.Module):
         self.out_dim = out_dim
         self.use_gpu = use_gpu
 
-        # 网络结构部分
+        # 网络结构部分 ## Network structure part
 
         # batch_norm layer
         self.batch_norm = nn.BatchNorm1d(in_dim)
@@ -113,10 +113,10 @@ class TA_LSTM(nn.Module):
         # lstmcell 
         self.lstmcell = nn.LSTMCell(lstm_in_dim, lstm_hidden_dim)
         
-        # temporal atteention module, 产生sequence_length个时间权重, 维度1 ×（lstm_hidden_dim + lstm_in_dim）-> 1 × sequence_length
+        # temporal atteention module, 产生(produce) sequence_length Time weights, dimensions 1 ×（lstm_hidden_dim + lstm_in_dim）-> 1 × sequence_length
         self.T_A = nn.Linear(sequence_length*lstm_hidden_dim, sequence_length)
         
-        # # output layer, 维度 1 × lstm_hiddendim -> 1 × 1
+        # # output layer, 维度(Dimension) 1 × lstm_hiddendim -> 1 × 1
         self.layer_out = nn.Linear(lstm_hidden_dim, out_dim,bias=False)
          
         # activate functions
@@ -126,19 +126,19 @@ class TA_LSTM(nn.Module):
 
     def forward (self,input):
 
-        # 批归一化处理输入
+        # 批归一化处理输入 ## Batch normalization processing input
         out = self.batch_norm(input)
         # print('batch_norm',out.size())
 
-        # 经过输入层处理
+        # 经过输入层处理 ## Processed by the input layer
         out = self.layer_in(out)
         # print('layer_in',out.size())
          
-        # 初始化隐藏状态与记忆单元状态
+        # 初始化隐藏状态与记忆单元状态 ## Initialize hidden state and memory cell state
         h_t_1 = torch.zeros(out.size(0), self.lstm_hidden_dim) # batch, hidden_size
         c_t_1 = torch.zeros(out.size(0), self.lstm_hidden_dim) # batch, hidden_size
       
-        # 创建一个列表，存储ht
+        # 创建一个列表，存储ht ## Create a list, store ht
         h_list = []
 
         for i in range(self.sequence_length):
@@ -181,7 +181,7 @@ class STA_LSTM(nn.Module):
 
         super(STA_LSTM,self).__init__()
 
-        # 参数导入部分
+        # 参数导入部分 ## Parameter import part
 
         self.in_dim = in_dim
         self.sequence_length = sequence_length
@@ -191,7 +191,7 @@ class STA_LSTM(nn.Module):
         self.out_dim = out_dim
         self.use_gpu = use_gpu
 
-        # 网络结构部分
+        # 网络结构部分 ## Network structure part
 
         # batch_norm layer
         self.batch_norm = nn.BatchNorm1d(in_dim)
@@ -205,10 +205,10 @@ class STA_LSTM(nn.Module):
         # lstmcell 
         self.lstmcell = nn.LSTMCell(lstm_in_dim, lstm_hidden_dim)
         
-        # temporal atteention module, 产生sequence_length个时间权重, 维度1 ×（lstm_hidden_dim + lstm_in_dim）-> 1 × sequence_length
+        # temporal atteention module, 产生(produce) sequence_length 个时间权重, 维度 (Time weights, dimensions 1) ×（lstm_hidden_dim + lstm_in_dim）-> 1 × sequence_length
         self.T_A = nn.Linear(sequence_length*lstm_hidden_dim, sequence_length)
         
-        # # output layer, 维度 1 × lstm_hiddendim -> 1 × 1
+        # # output layer, 维度(Dimension) 1 × lstm_hiddendim -> 1 × 1
         self.layer_out = nn.Linear(lstm_hidden_dim, out_dim,bias=False)
          
         # activate functions
@@ -218,19 +218,19 @@ class STA_LSTM(nn.Module):
 
     def forward (self,input):
 
-        # 批归一化处理输入
+        # 批归一化处理输入 ## Batch normalization processing input
         out = self.batch_norm(input)
         # print('batch_norm',out.size())
 
-        # 经过输入层处理
+        # 经过输入层处理 ## Processed by the input layer
         out = self.layer_in(out)
         # print('layer_in',out.size())
          
-        # 初始化隐藏状态与记忆单元状态
+        # 初始化隐藏状态与记忆单元状态 ## Initialize hidden state and memory cell state
         h_t_1 = torch.zeros(out.size(0), self.lstm_hidden_dim) # batch, hidden_size
         c_t_1 = torch.zeros(out.size(0), self.lstm_hidden_dim) # batch, hidden_size
       
-        # 创建一个列表，存储ht
+        # 创建一个列表，存储ht ## Create a list, store ht
         h_list = []
 
         for i in range(self.sequence_length):
