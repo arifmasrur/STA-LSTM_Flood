@@ -213,7 +213,7 @@ def main():
     print('average error = ',  average_error)
 
     result = pd.DataFrame(data = {'Q(t+1)':predictions,'Q(t+1)truth':test_groundtruth})
-    result.to_csv('STA-LSTM_Flood/data/output/out_t+1.csv')
+    result.to_csv('STA-LSTM_Flood/data/out_t+1.csv')
     
     torch.save(net,'STA-LSTM_Flood/models/sta_lstm_t+1.pth')
 
