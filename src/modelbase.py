@@ -199,13 +199,13 @@ class STA_LSTM(nn.Module):
         # input layer
         self.layer_in = nn.Linear(in_dim, in_dim,bias=False)
 
-        # spatial atteention module
+        # spatial attention module
         self.S_A = nn.Linear(lstm_in_dim, lstm_in_dim)
         
         # lstmcell 
         self.lstmcell = nn.LSTMCell(lstm_in_dim, lstm_hidden_dim)
         
-        # temporal atteention module, 产生(produce) sequence_length 个时间权重, 维度 (Time weights, dimensions 1) ×（lstm_hidden_dim + lstm_in_dim）-> 1 × sequence_length
+        # temporal attention module, 产生(produce) sequence_length 个时间权重, 维度 (Time weights, dimensions 1) ×（lstm_hidden_dim + lstm_in_dim）-> 1 × sequence_length
         self.T_A = nn.Linear(sequence_length*lstm_hidden_dim, sequence_length)
         
         # # output layer, 维度(Dimension) 1 × lstm_hiddendim -> 1 × 1
@@ -249,6 +249,7 @@ class STA_LSTM(nn.Module):
             h_t_1,c_t_1 = h_t,c_t
         
         total_ht = h_list[0]
+        print("total ht: {}".format(total_ht.shape))
         for i in range(1,len(h_list)):
             total_ht = torch.cat((total_ht,h_list[i]),1)    
         

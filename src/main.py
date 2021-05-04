@@ -20,7 +20,7 @@ from modelbase import STA_LSTM as Net
 # from modelbase import SVM as Net
 
 '''****************************initialization*******************************''' 
-IN_DIM =  144       # 因变量 TX144，CH96，HH120
+IN_DIM =  96       # 因变量 TX144，CH96，HH120
 SEQUENCE_LENGTH = 12   # 时间序列长度，即为回溯期
 
 LSTM_IN_DIM = int(IN_DIM/SEQUENCE_LENGTH)     # LSTM的input大小,等于总的变量长度/时间序列长度
@@ -44,7 +44,7 @@ USE_GPU = False
 
 '''****************************data prepration*******************************''' 
 # 准备好训练和测试数据
-dp = data_preprocess(file_path = './data/dataset/sample_t+1.csv', train_per = TRAIN_PER, vali_per = VALI_PER, in_dim = IN_DIM)
+dp = data_preprocess(file_path = 'STA-LSTM_Flood/data/dataset/sample_t+1.csv', train_per = TRAIN_PER, vali_per = VALI_PER, in_dim = IN_DIM)
 
 raw_data = dp.load_data()
 # print('数据导入完成')
@@ -213,9 +213,9 @@ def main():
     print('average error = ',  average_error)
 
     result = pd.DataFrame(data = {'Q(t+1)':predictions,'Q(t+1)truth':test_groundtruth})
-    result.to_csv('./data/output/out_t+1.csv')
+    result.to_csv('STA-LSTM_Flood/data/output/out_t+1.csv')
     
-    torch.save(net,'./models/sta_lstm_t+1.pth')
+    torch.save(net,'STA-LSTM_Flood/models/sta_lstm_t+1.pth')
 
 if __name__ == '__main__':
     main()
